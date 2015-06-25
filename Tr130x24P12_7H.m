@@ -1,16 +1,18 @@
 ###### Контролируемая резьба: Tr130x24(P12)-7H ######
 
-#Шаг и ход контролируемой
+# Шаг и ход контролируемой
 thr.P = 12;
 thr.Ph = 24;
-#Номинальный наружный диаметр
+# Номинальный наружный диаметр
 thr.d = thr.D4 = 130;
-#Допуски среднего диаметра
+# Допуски среднего диаметра
 thr.Td2 = 500/1000;      # Наружная резьба
 thr.TD2 = 670/1000;      # Внутренняя резьба
-#Основные отклоненения
+# Основные отклоненения
 thr.esd2 = -170/1000;
 thr.EID2 = 0;
+# Угол профиля резьбы (номинал), град
+thr.ang = 30;
 
 
 
@@ -37,10 +39,28 @@ plug.ng.A = ring.ng.A = 15*2 /60;
 
 
 
-###### Расчёт и результат ######
+###### Расчёт ######
 
-thr
-plug = trgage(thr, "plug", plug)
-ring = trgage(thr, "ring", ring)
-cplug = trgage(thr, "cplug", cplug, plug, ring)
+plug = trgage(thr, "plug", plug);
+ring = trgage(thr, "ring", ring);
+cplug = trgage(thr, "cplug", cplug, plug, ring);
+
+ball = bchooser(thr.P, thr.ang);
+
+GM_PlugGo = gmaker("plug", plug.go, ball);
+GM_PlugNG = gmaker("plug", plug.ng, ball);
+GM_RingGo = gmaker("ring", ring.go, ball);
+GM_RingNG = gmaker("ring", ring.ng, ball);
+GM_CPlugGo = gmaker("plug", cplug.go, ball);
+GM_CPlugNG = gmaker("plug", cplug.ng, ball);
+
+
+###### Вывод результатов ######
+
+printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
+printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
+printf("GM dist RingGo = %.3f ... %.3f\n", GM_RingGo);
+printf("GM dist RingNG = %.3f ... %.3f\n", GM_RingNG);
+printf("GM dist CPlugGo = %.3f ... %.3f\n", GM_CPlugGo);
+printf("GM dist CPlugNG = %.3f ... %.3f\n", GM_CPlugNG);
 

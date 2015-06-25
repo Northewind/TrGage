@@ -10,7 +10,8 @@ function [obj] = trgage(thr, type, varargin)
 	##   thr.P, thr.Ph      Шаг и ход контролируемой
 	##   thr.d, thr.D4      Номинальный наружный диаметр
 	##   thr.Td2, thr.TD2   Допуски среднего диаметра
-	##   thr.esd2           Основные отклонения
+	##   thr.esd2           Основное отклонение
+	##   thr.ang            Номинальный угол профиля, град
 	##
 	## plug - параметры рассчитываемых калибров-пробок
 	##   plug.go.W          Износ (W_GO)
@@ -44,7 +45,7 @@ function [obj] = trgage(thr, type, varargin)
 	#Номинальный внутренний диаметр
 	thr.d3 = thr.d - thr.P;
 	thr.D1 = thr.d - thr.P;
-	
+
 	switch (type)
 	case "plug"
 		plug = varargin{1};
@@ -64,6 +65,11 @@ function [obj] = trgage(thr, type, varargin)
 		error("Неизвестный тип объекта");
 
 	endswitch
+
+	obj.go.P   = obj.ng.P   = thr.P;
+	obj.go.Ph  = obj.ng.Ph  = thr.Ph;
+	obj.go.ang = obj.ng.ang = thr.ang;
+	
 endfunction
 
 
