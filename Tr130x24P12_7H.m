@@ -1,3 +1,5 @@
+#! /usr/bin/octave -qf
+
 ###### Контролируемая резьба: Tr130x24(P12)-7H ######
 
 # Шаг и ход контролируемой
@@ -46,6 +48,9 @@ ring = trgage(thr, "ring", ring);
 cplug = trgage(thr, "cplug", cplug, plug, ring);
 
 ball = bchooser(thr.P, thr.ang);
+bRing.d    = 4.7752;
+bRing.dsec = 3.355;
+
 
 GM_PlugGo = gmaker("plug", plug.go, ball);
 GM_PlugNG = gmaker("plug", plug.ng, ball);
