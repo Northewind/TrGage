@@ -62,6 +62,13 @@ GM_CPlugNG = gmaker("plug", cplug.ng, ball);
 
 ###### Вывод результатов ######
 
+printf("PlugGo d2 = %.3f ... %.3f\n", plug.go.d2);
+printf("PlugNG d2 = %.3f ... %.3f\n", plug.ng.d2);
+printf("RingGo D2 = %.3f ... %.3f\n", ring.go.D2);
+printf("RingNG D2 = %.3f ... %.3f\n", ring.ng.D2);
+printf("CPlugGo d2 = %.3f ... %.3f\n", cplug.go.d2);
+printf("CPlugNG d2 = %.3f ... %.3f\n\n", cplug.ng.d2);
+
 printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
 printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
 printf("GM dist RingGo = %.3f ... %.3f\n", GM_RingGo);
