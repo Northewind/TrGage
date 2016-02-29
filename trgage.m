@@ -4,7 +4,7 @@ function [obj] = trgage(thr, type, varargin)
 	## Использование:
 	##   [P]  = trgage(thr, "plug", plug)
 	##   [R]  = trgage(thr, "ring", ring)
-	##   [CP] = trgage(thr, "cplug", cplug, ring)
+	##   [CP] = trgage(thr, "cplug", cplug, plug, ring)
 	##
 	## thr - параметры контролируемой резьбы
 	##   thr.P, thr.Ph      Шаг и ход контролируемой
