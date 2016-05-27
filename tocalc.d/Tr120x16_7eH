@@ -43,9 +43,11 @@ plug.ng.A = ring.ng.A = 9*2 /60;
 
 ###### Расчёт ######
 
-plug = trgage(thr, "plug", plug);
+plug = trgage(thr, "plug", plug)
 ring = trgage(thr, "ring", ring);
 cplug = trgage(thr, "cplug", cplug, plug, ring);
+
+exit
 
 ball = bchooser(thr.P, thr.ang);
 bRing.d    = 4.7752;
