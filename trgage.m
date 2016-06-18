@@ -35,7 +35,7 @@ function [obj] = trgage(thr, type, varargin)
 	    ГОСТ 9562-81 ОНВ. Резьба трап однозах. Допуски
 	    ГОСТ 24739-81 ОНВ. Резьба трапец. многозах
 	    ГОСТ 10071-89 Калибры для однозаходной трап резьбы
-	    ГОСТ 24939-81 Калибры для целиндрич резьб. Виды
+	    ГОСТ 24939-81 Калибры для цилиндрич резьб. Виды
 	    ГОСТ 27298-87 Калибры для многозах трап резьбы. Допуски
 	#}
 
@@ -79,12 +79,14 @@ function plug = plug_calc(thr, plug)
 	plug.ng.F1 = 0.1*thr.P;
 
 	#Наружные диаметры
-	plug.go.d = thr.d + plug.go.Z + [-plug.T plug.T];
-	plug.ng.d = thr.D2 + thr.TD2 + plug.T/2 + 2*plug.ng.F1 + [-plug.T plug.T];
+	plug.go.d = thr.d + plug.go.Z + plug.T*[-1 1];
+	plug.ng.d = thr.D2 + thr.TD2 + plug.T/2 + 2*plug.ng.F1;
+	plug.ng.d = plug.ng.d + plug.T*[-1 1];
 		
 	#Средние диаметры
-	plug.go.d2 = thr.D2 + plug.go.Z + [-plug.T/2 plug.T/2];
-	plug.ng.d2 = thr.D2 + thr.TD2 + plug.T/2 + [-plug.T/2 plug.T/2];
+	plug.go.d2 = thr.D2 + plug.go.Z + plug.T/2*[-1 1];
+	plug.ng.d2 = thr.D2 + thr.TD2 + plug.T/2;
+	plug.ng.d2 = plug.ng.d2 + plug.T/2*[-1 1];
 
 	#Внутренние диаметры
 	plug.go.d1 = thr.d3 + [-inf 0];
@@ -102,24 +104,31 @@ function ring = ring_calc(thr, ring)
 	ring.ng.D = thr.D4 + [0 inf];
 
 	#Средние диаметры
-	ring.go.D2 = thr.d2 + thr.esd2 - ring.go.Z + [-ring.T/2 ring.T/2];
-	ring.ng.D2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 + [-ring.T/2 ring.T/2];
+	ring.go.D2 = thr.d2 + thr.esd2 - ring.go.Z;
+	ring.go.D2 = ring.go.D2 + ring.T/2*[-1 1]
+	ring.ng.D2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2;
+	ring.ng.D2 = ring.ng.D2 + ring.T/2*[-1 1];
 
 	#Внутренние диаметры
-	ring.go.D1 = thr.D1 + [-ring.T/2 ring.T/2];
-	ring.ng.D1 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 - 2*ring.ng.F1 + [-ring.T ring.T];
+	ring.go.D1 = thr.D1 + ring.T/2*[-1 1];
+	ring.ng.D1 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 - 2*ring.ng.F1
+	ring.ng.D1 = ring.ng.D1 + ring.T*[-1 1];
 endfunction
 
 
 
 function cplug = cplug_calc(thr, cplug, plug, ring)
 	#Наружные диаметры
-	cplug.go.d = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W + 2*ring.ng.F1 + [-plug.T/2 plug.T/2];
-	cplug.ng.d = thr.d - thr.Td2 - ring.T/2 + ring.ng.W + [-plug.T plug.T];
+	cplug.go.d = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W + 2*ring.ng.F1;
+	cplug.go.d = cplug.go.d + plug.T/2*[-1 1];
+	cplug.ng.d = thr.d - thr.Td2 - ring.T/2 + ring.ng.W;
+	cplug.ng.d = cplug.ng.d + plug.T*[-1 1];
 
 	#Средние диаметры
-	cplug.go.d2 = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W + [-cplug.T/2 cplug.T/2];
-	cplug.ng.d2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 + ring.ng.W + [-cplug.T/2 cplug.T/2];
+	cplug.go.d2 = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W;
+	cplug.go.d2 = cplug.go.d2 + cplug.T/2*[-1 1];
+	cplug.ng.d2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 + ring.ng.W;
+	cplug.ng.d2 = cplug.ng.d2 + cplug.T/2*[-1 1];
 
 	#Внутренние диаметры
 	cplug.go.d1 = thr.d3 + [-inf 0];
