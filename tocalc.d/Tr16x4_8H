@@ -18,36 +18,13 @@ thr.EI = 0;
 thr.ang = 30;
 
 
-
-###### Калибры ######
-
-# Допуски среднего диаметра (T_PL, T_R; T_cp - ГОСТ 10071)
-plug.T = 26/1000;
-#ring.T = 42/1000;
-#cplug.T = 22/1000;
-
-# Расстояние от середины поля допуска T_PL/T_R ПР-калибров до проходного предела среднего диаметра резьбы (Z_PL, Z_R - ГОСТ 10071)
-plug.go.Z = 35/1000;
-#ring.go.Z = 29/1000;
-
-# Износ (W_GO, W_NG - ГОСТ 10071)
-plug.go.W = 39/1000;
-plug.ng.W = 28/1000;
-#ring.go.W = 48/1000;
-#ring.ng.W = 36/1000;
-
-# Допуск угла профиля (T_alpha1, T_alpha2 - ГОСТ 10071), град 
-plug.go.A = ring.go.A = 8*2 /60;
-plug.ng.A = ring.ng.A = 11*2 /60;
-
-
 ###### Расчёт ######
 
-plug = trgage(thr, "plug", plug)
-#ring = trgage(thr, "ring", ring);
-#cplug = trgage(thr, "cplug", cplug, plug, ring);
+plug = trgage(thr, "plug");
+#ring = trgage(thr, "ring");
+#cplug = trgage(thr, "cplug");
 
-ball = bchooser(thr.P, thr.ang)
+ball = bchooser(thr.P, thr.ang);
 
 GM_PlugGo = gmaker("plug", plug.go, ball);
 GM_PlugNG = gmaker("plug", plug.ng, ball);

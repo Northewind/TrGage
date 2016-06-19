@@ -80,7 +80,7 @@ function res = ringGO(thr, gtol)
 	res.D = thr.D4;
 	res.D = res.D + [0 inf];
 	res.D2 = thr.d2 + thr.esd2 - gtol.Z_R;
-	res.D2 = res.D2 + gtol.T_R/2*[-1 1]
+	res.D2 = res.D2 + gtol.T_R/2*[-1 1];
 	res.D1 = thr.D1;
 	res.D1 = res.D1 + gtol.T_R/2*[-1 1];
 end
@@ -90,7 +90,7 @@ function res = ringNG(thr, gtol, F1)
 	res.D = res.D + [0 inf];
 	res.D2 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2;
 	res.D2 = res.D2 + gtol.T_R/2*[-1 1];
-	res.D1 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 - 2*F1
+	res.D1 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 - 2*F1;
 	res.D1 = res.D1 + gtol.T_R*[-1 1];
 end
 

@@ -17,62 +17,38 @@ thr.EID2 = 0;
 thr.ang = 30;
 
 
-
-###### Калибры ######
-
-#Износ (W_GO, W_NG)
-plug.go.W = 48/1000;
-plug.ng.W = 35/1000;
-ring.go.W = 47/1000;
-ring.ng.W = 35/1000;
-
-#Допуски среднего диаметра (T_PL, T_R; T_cp)
-plug.T = 33/1000;
-ring.T = 43/1000;
-cplug.T = 23/1000;
-
-#Расстояние от середины поля допуска T_PL/T_R ПР-калибров до проходного предела среднего диаметра резьбы (Z_PL, Z_R)
-plug.go.Z = 35/1000;
-ring.go.Z = 17/1000;
-
-#Допуск угла профиля (T_alpha1, T_alpha2), град 
-plug.go.A = ring.go.A = 15*2/60;
-plug.ng.A = ring.ng.A = 21*2/60;
-
-
-
 ###### Расчёт ######
 
-plug = trgage(thr, "plug", plug)
-ring = trgage(thr, "ring", ring);
-cplug = trgage(thr, "cplug", cplug, plug, ring);
+plug = trgage(thr, "plug");
+ring = trgage(thr, "ring");
+cplug = trgage(thr, "cplug");
 
-#ball = bchooser(thr.P, thr.ang);
+ball = bchooser(thr.P, thr.ang);
 #bRing.d    = 4.7752;
 #bRing.dsec = 3.355;
 
 
-#GM_PlugGo = gmaker("plug", plug.go, ball);
-#GM_PlugNG = gmaker("plug", plug.ng, ball);
-#GM_RingGo = gmaker("ring", ring.go, ball);
-#GM_RingNG = gmaker("ring", ring.ng, ball);
-#GM_CPlugGo = gmaker("plug", cplug.go, ball);
-#GM_CPlugNG = gmaker("plug", cplug.ng, ball);
+GM_PlugGo = gmaker("plug", plug.go, ball);
+GM_PlugNG = gmaker("plug", plug.ng, ball);
+GM_RingGo = gmaker("ring", ring.go, ball);
+GM_RingNG = gmaker("ring", ring.ng, ball);
+GM_CPlugGo = gmaker("plug", cplug.go, ball);
+GM_CPlugNG = gmaker("plug", cplug.ng, ball);
 
 
 ###### Вывод результатов ######
 
-#printf("PlugGo d2 = %.3f ... %.3f\n", plug.go.d2);
-#printf("PlugNG d2 = %.3f ... %.3f\n", plug.ng.d2);
-#printf("RingGo D2 = %.3f ... %.3f\n", ring.go.D2);
-#printf("RingNG D2 = %.3f ... %.3f\n", ring.ng.D2);
-#printf("CPlugGo d2 = %.3f ... %.3f\n", cplug.go.d2);
-#printf("CPlugNG d2 = %.3f ... %.3f\n\n", cplug.ng.d2);
+printf("PlugGo d2 = %.3f ... %.3f\n", plug.go.d2);
+printf("PlugNG d2 = %.3f ... %.3f\n", plug.ng.d2);
+printf("RingGo D2 = %.3f ... %.3f\n", ring.go.D2);
+printf("RingNG D2 = %.3f ... %.3f\n", ring.ng.D2);
+printf("CPlugGo d2 = %.3f ... %.3f\n", cplug.go.d2);
+printf("CPlugNG d2 = %.3f ... %.3f\n\n", cplug.ng.d2);
 
-#printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
-#printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
-#printf("GM dist RingGo = %.3f ... %.3f\n", GM_RingGo);
-#printf("GM dist RingNG = %.3f ... %.3f\n", GM_RingNG);
-#printf("GM dist CPlugGo = %.3f ... %.3f\n", GM_CPlugGo);
-#printf("GM dist CPlugNG = %.3f ... %.3f\n", GM_CPlugNG);
+printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
+printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
+printf("GM dist RingGo = %.3f ... %.3f\n", GM_RingGo);
+printf("GM dist RingNG = %.3f ... %.3f\n", GM_RingNG);
+printf("GM dist CPlugGo = %.3f ... %.3f\n", GM_CPlugGo);
+printf("GM dist CPlugNG = %.3f ... %.3f\n", GM_CPlugNG);
 

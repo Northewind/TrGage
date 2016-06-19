@@ -17,37 +17,13 @@ thr.EID2 = 0;
 thr.ang = 30;
 
 
-
-###### Калибры ######
-
-#Износ (W_GO, W_NG)
-plug.go.W = 48/1000;
-plug.ng.W = 35/1000;
-ring.go.W = 60/1000;
-ring.ng.W = 45/1000;
-
-#Допуски среднего диаметра (T_PL, T_R; T_cp)
-plug.T = 32/1000;
-ring.T = 54/1000;
-cplug.T = 26/1000;
-
-#Расстояние от середины поля допуска T_PL/T_R ПР-калибров до проходного предела среднего диаметра резьбы (Z_PL, Z_R)
-plug.go.Z = 46/1000;
-ring.go.Z = 40/1000;
-
-#Допуск угла профиля (T_alpha1, T_alpha2), град 
-plug.go.A = ring.go.A = 7*2 /60;
-plug.ng.A = ring.ng.A = 9*2 /60;
-
-
-
 ###### Расчёт ######
 
-plug = trgage(thr, "plug", plug)
-ring = trgage(thr, "ring", ring);
-cplug = trgage(thr, "cplug", cplug, plug, ring);
+plug = trgage(thr, "plug");
+ring = trgage(thr, "ring");
+cplug = trgage(thr, "cplug");
 
-exit
+#exit
 
 ball = bchooser(thr.P, thr.ang);
 bRing.d    = 4.7752;
@@ -78,5 +54,3 @@ printf("GM dist RingNG = %.3f ... %.3f\n", GM_RingNG);
 printf("GM dist CPlugGo = %.3f ... %.3f\n", GM_CPlugGo);
 printf("GM dist CPlugNG = %.3f ... %.3f\n", GM_CPlugNG);
 
-plug.go
-plug.ng
