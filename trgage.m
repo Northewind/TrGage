@@ -1,137 +1,117 @@
-function [obj] = trgage(thr, type, varargin)
+function g = trgage(thr, type)
 	## Расчёт калибров для трапецеидальных резьб
 	##
 	## Использование:
-	##   [P]  = trgage(thr, "plug", plug)
-	##   [R]  = trgage(thr, "ring", ring)
-	##   [CP] = trgage(thr, "cplug", cplug, plug, ring)
+	##     [P]  = trgage(thr, "plug")
+	##     [R]  = trgage(thr, "ring")
+	##     [CP] = trgage(thr, "cplug")
 	##
-	## thr - параметры контролируемой резьбы
-	##   thr.P, thr.Ph      Шаг и ход контролируемой
-	##   thr.d, thr.D4      Номинальный наружный диаметр
-	##   thr.Td2, thr.TD2   Допуски среднего диаметра
-	##   thr.esd2           Основное отклонение
-	##   thr.ang            Номинальный угол профиля, град
+	## Входные параметры:
+	##     thr - параметры контролируемой резьбы
+	##       thr.P, thr.Ph      Шаг и ход контролируемой
+	##       thr.d, thr.D4      Номинальный наружный диаметр
+	##       thr.Td2, thr.TD2   Допуски среднего диаметра
+	##       thr.esd2           Основное отклонение
+	##       thr.ang            Номинальный угол профиля, град
 	##
-	## plug - параметры рассчитываемых калибров-пробок
-	##   plug.go.W          Износ (W_GO)
-	##   plug.ng.W          Износ (W_NG)
-	##   plug.T             Допуск среднего диаметра (T_PL)
-	##   plug.go.Z          Расстояние от середины поля допуска T_PL/T_R ПР-калибров до проходного предела среднего диаметра резьбы (Z_PL)
-	##
-	## ring - параметры рассчитываемых калибров-колец
-	##   ring.go.W          Износ (W_GO)
-	##   ring.ng.W          Износ (W_NG)
-	##   ring.T             Допуск среднего диаметра (T_R)
-	##   ring.go.Z          Расстояние от середины поля допуска T_PL/T_R ПР-калибров до проходного предела среднего диаметра резьбы (Z_R)
-	##
-	## cplug - параметры рассчитываемых КИ-калибров-пробок
-	##   cplug.T            Допуск среднего диаметра (T_cp)
+	## Использованные нормативные документы:
+	##     ГОСТ 9484-81 ОНВ. Разьба трап. Профили
+	##     ГОСТ 9562-81 ОНВ. Резьба трап однозах. Допуски
+	##     ГОСТ 24739-81 ОНВ. Резьба трапец. многозах
+	##     ГОСТ 10071-89 Калибры для однозаходной трап резьбы
+	##     ГОСТ 24939-81 Калибры для цилиндрич резьб. Виды
+	##     ГОСТ 27298-87 Калибры для многозах трап резьбы. Допуски
 	##
 
-	#{
-	    Нормативные документы:
-	    ГОСТ 9484-81 ОНВ. Разьба трап. Профили
-	    ГОСТ 9562-81 ОНВ. Резьба трап однозах. Допуски
-	    ГОСТ 24739-81 ОНВ. Резьба трапец. многозах
-	    ГОСТ 10071-89 Калибры для однозаходной трап резьбы
-	    ГОСТ 24939-81 Калибры для цилиндрич резьб. Виды
-	    ГОСТ 27298-87 Калибры для многозах трап резьбы. Допуски
-	#}
-
-	#Номинальный средний диаметр контролируемой резьбы
+	# Номинальный средний диаметр контролируемой резьбы
 	thr.d2 = thr.d - thr.P/2;
 	thr.D2 = thr.D4 - thr.P/2;
-	#Номинальный внутренний диаметр
+	# Номинальный внутренний диаметр
 	thr.d3 = thr.d - thr.P;
 	thr.D1 = thr.d - thr.P;
+	# Расстояние между линией среднего диаметра и вершиной укороченного профиля резьбы калибра
+	F1 = 0.1 * thr.P;
 
 	switch (type)
 	case "plug"
-		plug = varargin{1};
-		obj = plug_calc(thr, plug);
-
+		gtol = tol(thr.TD2, thr.P, thr.Ph);
+		g.go = plugGO(thr, gtol);
+		g.ng = plugNG(thr, gtol, F1);
 	case "ring"
-		ring = varargin{1};
-		obj = ring_calc(thr, ring);
-
+		gtol = tol(thr.Td2, thr.P, thr.Ph);
+		g.go = ringGO(thr, gtol);
+		g.ng = ringNG(thr, gtol, F1);
 	case "cplug"
-		cplug = varargin{1};
-		plug = plug_calc(thr, varargin{2});
-		ring = ring_calc(thr, varargin{3});
-		obj = cplug_calc(thr, cplug, plug, ring);
-
+		gtol = tol(thr.TD2, thr.P, thr.Ph);
+		g.go = cplugGO(thr, gtol, F1);
+		g.ng = cplugNG(thr, gtol);
 	otherwise
 		error("Неизвестный тип объекта");
-
-	endswitch
-
-	obj.go.P   = obj.ng.P   = thr.P;
-	obj.go.Ph  = obj.ng.Ph  = thr.Ph;
-	obj.go.ang = obj.ng.ang = thr.ang;
-	
-endfunction
+	end
+	g.go.ang = g.ng.ang = thr.ang;
+	g.go.P = g.ng.P = thr.P;
+	g.go.Ph = g.ng.Ph = thr.Ph;
+end
 
 
 
-function plug = plug_calc(thr, plug)
-	#Расстояние между линией среднего диаметра и вершиной укороченного профиля резьбы калибра (F1)
-	plug.ng.F1 = 0.1*thr.P;
+function res = plugGO(thr, gtol)
+	res.d = thr.d + gtol.Z_PL;
+	res.d = res.d + gtol.T_PL*[-1 1];
+	res.d2 = thr.D2 + gtol.Z_PL;
+	res.d2_wearlim = res.d2 - gtol.W_GO_PL;
+	res.d2 = res.d2 + gtol.T_PL/2*[-1 1];
+	res.d1 = thr.d3;
+	res.d1 = res.d1 + [-inf 0];
+end
 
-	#Наружные диаметры
-	plug.go.d = thr.d + plug.go.Z + plug.T*[-1 1];
-	plug.ng.d = thr.D2 + thr.TD2 + plug.T/2 + 2*plug.ng.F1;
-	plug.ng.d = plug.ng.d + plug.T*[-1 1];
-		
-	#Средние диаметры
-	plug.go.d2 = thr.D2 + plug.go.Z + plug.T/2*[-1 1];
-	plug.ng.d2 = thr.D2 + thr.TD2 + plug.T/2;
-	plug.ng.d2 = plug.ng.d2 + plug.T/2*[-1 1];
-
-	#Внутренние диаметры
-	plug.go.d1 = thr.d3 + [-inf 0];
-	plug.ng.d1 = thr.d3 + [-inf 0];
-endfunction
-
-
-
-function ring = ring_calc(thr, ring)
-	#Расстояние между линией среднего диаметра и вершиной укороченного профиля резьбы калибра (F1)
-	ring.ng.F1 = 0.1*thr.P;
-
-	#Наружные диаметры
-	ring.go.D = thr.D4 + [0 inf];
-	ring.ng.D = thr.D4 + [0 inf];
-
-	#Средние диаметры
-	ring.go.D2 = thr.d2 + thr.esd2 - ring.go.Z;
-	ring.go.D2 = ring.go.D2 + ring.T/2*[-1 1]
-	ring.ng.D2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2;
-	ring.ng.D2 = ring.ng.D2 + ring.T/2*[-1 1];
-
-	#Внутренние диаметры
-	ring.go.D1 = thr.D1 + ring.T/2*[-1 1];
-	ring.ng.D1 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 - 2*ring.ng.F1
-	ring.ng.D1 = ring.ng.D1 + ring.T*[-1 1];
-endfunction
+function res = plugNG(thr, gtol, F1)
+	res.d = thr.D2 + thr.TD2 + gtol.T_PL/2 + 2*F1;
+	res.d = res.d + gtol.T_PL*[-1 1];
+	res.d2 = thr.D2 + thr.TD2 + gtol.T_PL/2;
+	res.d2_wearlim = res.d2 - gtol.W_NG_PL;
+	res.d2 = res.d2 + gtol.T_PL/2*[-1 1];
+	res.d1 = thr.d3;
+	res.d1 = res.d1 + [-inf 0];
+end
 
 
+function res = ringGO(thr, gtol)
+	res.D = thr.D4;
+	res.D = res.D + [0 inf];
+	res.D2 = thr.d2 + thr.esd2 - gtol.Z_R;
+	res.D2 = res.D2 + gtol.T_R/2*[-1 1]
+	res.D1 = thr.D1;
+	res.D1 = res.D1 + gtol.T_R/2*[-1 1];
+end
 
-function cplug = cplug_calc(thr, cplug, plug, ring)
-	#Наружные диаметры
-	cplug.go.d = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W + 2*ring.ng.F1;
-	cplug.go.d = cplug.go.d + plug.T/2*[-1 1];
-	cplug.ng.d = thr.d - thr.Td2 - ring.T/2 + ring.ng.W;
-	cplug.ng.d = cplug.ng.d + plug.T*[-1 1];
+function res = ringNG(thr, gtol, F1)
+	res.D = thr.D4;
+	res.D = res.D + [0 inf];
+	res.D2 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2;
+	res.D2 = res.D2 + gtol.T_R/2*[-1 1];
+	res.D1 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 - 2*F1
+	res.D1 = res.D1 + gtol.T_R*[-1 1];
+end
 
-	#Средние диаметры
-	cplug.go.d2 = thr.d2 + thr.esd2 - ring.go.Z + ring.go.W;
-	cplug.go.d2 = cplug.go.d2 + cplug.T/2*[-1 1];
-	cplug.ng.d2 = thr.d2 + thr.esd2 - thr.Td2 - ring.T/2 + ring.ng.W;
-	cplug.ng.d2 = cplug.ng.d2 + cplug.T/2*[-1 1];
 
-	#Внутренние диаметры
-	cplug.go.d1 = thr.d3 + [-inf 0];
-	cplug.ng.d1 = thr.d3 - thr.Td2 + [-inf 0];
-endfunction
+function res = cplugGO(thr, gtol, F1)
+	%% Расчёт калибра-пробки для контроля износа проходных калибров-колец
+	res.d = thr.d2 + thr.esd2 - gtol.Z_R + gtol.W_GO_R + 2*F1;
+	res.d = res.d + gtol.T_PL/2*[-1 1];
+	res.d2 = thr.d2 + thr.esd2 - gtol.Z_R + gtol.W_GO_R;
+	res.d2 = res.d2 + gtol.T_CP/2*[-1 1];
+	res.d1 = thr.d3;
+	res.d1 = res.d1 + [-inf 0];
+end
+
+function res = cplugNG(thr, gtol)
+	%% Расчёт калибра-пробки для контроля износа НЕпроходных калибров-колец
+	res.d = thr.d - thr.Td2 - gtol.T_R/2 + gtol.W_NG_R;
+	res.d = res.d + gtol.T_PL*[-1 1];
+	res.d2 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 + gtol.W_NG_R;
+	res.d2 = res.d2 + gtol.T_CP/2*[-1 1];
+	res.d1 = thr.d3 - thr.Td2;
+	res.d1 = res.d1 + [-inf 0];
+end
 
