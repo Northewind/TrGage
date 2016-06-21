@@ -1,0 +1,58 @@
+#! /usr/bin/octave -qf
+
+###### Контролируемая резьба: Tr120x24(P6)-7H/e ######
+
+# Шаг и ход контролируемой
+thr.P = 6;
+thr.Ph = 24;
+# Номинальный наружный диаметр
+thr.d = 120;
+thr.D4 = 121;
+# Допуски среднего диаметра
+thr.Td2 = 300/1000;      # Наружная резьба
+thr.TD2 = 400/1000;      # Внутренняя резьба
+# Основные отклоненения
+thr.esd2 = -118/1000;
+thr.EID2 = 0;
+# Угол профиля резьбы (номинал), град
+thr.ang = 30;
+
+
+###### Расчёт ######
+
+plug = trgage(thr, "plug");
+ring = trgage(thr, "ring");
+cplug = trgage(thr, "cplug");
+
+ball = bchooser(thr.P, thr.ang);
+
+GM_PlugGo = gmaker("plug", plug.go, ball);
+GM_PlugNG = gmaker("plug", plug.ng, ball);
+GM_RingGo = gmaker("ring", ring.go, ball);
+GM_RingNG = gmaker("ring", ring.ng, ball);
+GM_CPlugGo = gmaker("plug", cplug.go, ball);
+GM_CPlugNG = gmaker("plug", cplug.ng, ball);
+
+
+###### Вывод результатов ######
+
+printf("PlugGo d2 = %.3f ... %.3f\n", plug.go.d2);
+printf("PlugGo d = %.3f ... %.3f\n", plug.go.d);
+printf("PlugNG d2 = %.3f ... %.3f\n", plug.ng.d2);
+printf("PlugNG d = %.3f ... %.3f\n", plug.ng.d);
+printf("RingGo D2 = %.3f ... %.3f\n", ring.go.D2);
+printf("RingGo D1 = %.3f ... %.3f\n", ring.go.D1);
+printf("RingNG D2 = %.3f ... %.3f\n", ring.ng.D2);
+printf("RingNG D1 = %.3f ... %.3f\n", ring.ng.D1);
+printf("CPlugGo d2 = %.3f ... %.3f\n", cplug.go.d2);
+printf("CPlugGo d = %.3f ... %.3f\n", cplug.go.d);
+printf("CPlugNG d2 = %.3f ... %.3f\n\n", cplug.ng.d2);
+printf("CPlugNG d = %.3f ... %.3f\n\n", cplug.ng.d);
+
+printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
+printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
+printf("GM dist RingGo = %.3f ... %.3f\n", GM_RingGo);
+printf("GM dist RingNG = %.3f ... %.3f\n", GM_RingNG);
+printf("GM dist CPlugGo = %.3f ... %.3f\n", GM_CPlugGo);
+printf("GM dist CPlugNG = %.3f ... %.3f\n", GM_CPlugNG);
+
