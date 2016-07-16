@@ -53,63 +53,80 @@ function g = trgage(thr, type)
 end
 
 
-
+% Обозначение в табл. 10 ГОСТ 10071/27298:  ПР (21)
 function res = plugGO(thr, gtol)
 	res.d = thr.d + gtol.Z_PL;
+	res.d_wearlim = res.d - gtol.W_GO_PL;
 	res.d = res.d + gtol.T_PL*[-1 1];
+
 	res.d2 = thr.D2 + gtol.Z_PL;
 	res.d2_wearlim = res.d2 - gtol.W_GO_PL;
 	res.d2 = res.d2 + gtol.T_PL/2*[-1 1];
+
 	res.d1 = thr.d3;
 	res.d1 = res.d1 + [-inf 0];
 end
 
+% Обозначение в табл. 10 ГОСТ 10071/27298:  НЕ (22)
 function res = plugNG(thr, gtol, F1)
 	res.d = thr.D2 + thr.TD2 + gtol.T_PL/2 + 2*F1;
 	res.d = res.d + gtol.T_PL*[-1 1];
+
 	res.d2 = thr.D2 + thr.TD2 + gtol.T_PL/2;
 	res.d2_wearlim = res.d2 - gtol.W_NG_PL;
 	res.d2 = res.d2 + gtol.T_PL/2*[-1 1];
+
 	res.d1 = thr.d3;
 	res.d1 = res.d1 + [-inf 0];
 end
 
-
+% Обозначение в табл. 10 ГОСТ 10071/27298:  ПР (1)
 function res = ringGO(thr, gtol)
 	res.D = thr.D4;
 	res.D = res.D + [0 inf];
+
 	res.D2 = thr.d2 + thr.esd2 - gtol.Z_R;
+	res.D2_wearlim = res.D2 + gtol.W_GO_R;
 	res.D2 = res.D2 + gtol.T_R/2*[-1 1];
+
 	res.D1 = thr.D1;
+	res.D1_wearlim = res.D1 + gtol.W_GO_R;
 	res.D1 = res.D1 + gtol.T_R/2*[-1 1];
 end
 
+% Обозначение в табл. 10 ГОСТ 10071/27298:  НЕ (11)
 function res = ringNG(thr, gtol, F1)
 	res.D = thr.D4;
 	res.D = res.D + [0 inf];
+
 	res.D2 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2;
+	res.D2_wearlim = res.D2 + gtol.W_NG_R;
 	res.D2 = res.D2 + gtol.T_R/2*[-1 1];
+
 	res.D1 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 - 2*F1;
 	res.D1 = res.D1 + gtol.T_R*[-1 1];
 end
 
-
+% Обозначение в табл. 10 ГОСТ 10071/27298:  КИ (6)
 function res = cplugGO(thr, gtol, F1)
-	%% Расчёт калибра-пробки для контроля износа проходных калибров-колец
 	res.d = thr.d2 + thr.esd2 - gtol.Z_R + gtol.W_GO_R + 2*F1;
 	res.d = res.d + gtol.T_PL/2*[-1 1];
+
 	res.d2 = thr.d2 + thr.esd2 - gtol.Z_R + gtol.W_GO_R;
 	res.d2 = res.d2 + gtol.T_CP/2*[-1 1];
+
 	res.d1 = thr.d3;
 	res.d1 = res.d1 + [-inf 0];
 end
 
+% Обозначение в табл. 10 ГОСТ 10071/27298:  КИ-НЕ (16)
 function res = cplugNG(thr, gtol)
-	%% Расчёт калибра-пробки для контроля износа НЕпроходных калибров-колец
 	res.d = thr.d - thr.Td2 - gtol.T_R/2 + gtol.W_NG_R;
 	res.d = res.d + gtol.T_PL*[-1 1];
+
 	res.d2 = thr.d2 + thr.esd2 - thr.Td2 - gtol.T_R/2 + gtol.W_NG_R;
 	res.d2 = res.d2 + gtol.T_CP/2*[-1 1];
+
 	res.d1 = thr.d3 - thr.Td2;
 	res.d1 = res.d1 + [-inf 0];
 end

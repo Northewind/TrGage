@@ -20,10 +20,15 @@ thr.ang = 30;
 ###### Расчёт ######
 
 plug = trgage(thr, "plug");
-ring = trgage(thr, "ring");
-cplug = trgage(thr, "cplug");
+print_gage(plug, thr.P, thr.d, "plug");
 
-#exit
+ring = trgage(thr, "ring");
+print_gage(ring, thr.P, thr.d, "ring");
+
+cplug = trgage(thr, "cplug");
+print_gage(cplug, thr.P, thr.d, "cplug");
+
+exit
 
 ball = bchooser(thr.P, thr.ang);
 bRing.d    = 4.7752;
