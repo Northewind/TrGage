@@ -20,38 +20,120 @@ function print_gage(g, p, d, typ)
 
 	switch (typ)
 	case "plug"
+		go_d_min = min(g.go.d);
+		go_d_max = max(g.go.d);
+		go_d_mn = mean([go_d_min go_d_max]);
+		go_d2_min = min(g.go.d2);
+		go_d2_max = max(g.go.d2);
+		go_d2_mn = mean([go_d2_min go_d2_max]);
+		go_d1_min = min(g.go.d1);
+		go_d1_max = max(g.go.d1);
+		go_d1_mn = mean([go_d1_min go_d1_max]);
+
 		printf("Plug-Go for thread %gx%g:\n", d, p);
-		printf("    major diameter (d):  %g...%g\n", min(g.go.d), max(g.go.d));
+		printf("    major diameter (d):  %g...%g\t(%g+-%g)\n",
+			   go_d_min, go_d_max, go_d_mn, go_d_max - go_d_mn);
 		printf("    major diameter wear limit: %g\n", g.go.d_wearlim);
-		printf("    pitch diameter (d2): %g...%g\n", min(g.go.d2), max(g.go.d2));
+		printf("    pitch diameter (d2): %g...%g\t(%g+-%g)\n",
+			   go_d2_min, go_d2_max, go_d2_mn, go_d2_max - go_d2_mn);
 		printf("    pitch diameter wear limit: %g\n", g.go.d2_wearlim);
-		printf("    minor diameter (d1): %g...%g\n", min(g.go.d1), max(g.go.d1));
+		printf("    minor diameter (d1): %g...%g\t(%g+-%g)\n",
+			   go_d1_min, go_d1_max, go_d1_mn, go_d1_max - go_d1_mn);
+
+		ng_d_min = min(g.ng.d);
+		ng_d_max = max(g.ng.d);
+		ng_d_mn = mean([ng_d_min ng_d_max]);
+		ng_d2_min = min(g.ng.d2);
+		ng_d2_max = max(g.ng.d2);
+		ng_d2_mn = mean([ng_d2_min ng_d2_max]);
+		ng_d1_min = min(g.ng.d1);
+		ng_d1_max = max(g.ng.d1);
+		ng_d1_mn = mean([ng_d1_min ng_d1_max]);
+
 		printf("Plug-NoGo for thread %gx%g\n", d, p);
-		printf("    major diameter (d):  %g...%g\n", min(g.ng.d), max(g.ng.d));
-		printf("    pitch diameter (d2): %g...%g\n", min(g.ng.d2), max(g.ng.d2));
+		printf("    major diameter (d):  %g...%g\t(%g+-%g)\n",
+			   ng_d_min, ng_d_max, ng_d_mn, ng_d_max - ng_d_mn);
+		printf("    pitch diameter (d2): %g...%g\t(%g+-%g)\n",
+			   ng_d2_min, ng_d2_max, ng_d2_mn, ng_d2_max - ng_d2_mn);
 		printf("    pitch diameter wear limit: %g\n", g.ng.d2_wearlim);
-		printf("    minor diameter (d1): %g...%g\n", min(g.ng.d1), max(g.ng.d1));
+		printf("    minor diameter (d1): %g...%g\t(%g+-%g)\n",
+			   ng_d1_min, ng_d1_max, ng_d1_mn, ng_d1_max - ng_d1_mn);
 	case "ring"
+		go_D_min = min(g.go.D);
+		go_D_max = max(g.go.D);
+		go_D_mn = mean([go_D_min go_D_max]);
+		go_D2_min = min(g.go.D2);
+		go_D2_max = max(g.go.D2);
+		go_D2_mn = mean([go_D2_min go_D2_max]);
+		go_D1_min = min(g.go.D1);
+		go_D1_max = max(g.go.D1);
+		go_D1_mn = mean([go_D1_min go_D1_max]);
+
 		printf("Ring-Go for thread %gx%g:\n", d, p);
-		printf("    major diameter (D):  %g...%g\n", min(g.go.D), max(g.go.D));
-		printf("    pitch diameter (D2): %g...%g\n", min(g.go.D2), max(g.go.D2));
+		printf("    major diameter (D):  %g...%g\t(%g+-%g)\n",
+		       go_D_min, go_D_max, go_D_mn, go_D_max - go_D_mn);
+		printf("    pitch diameter (D2): %g...%g\t(%g+-%g)\n",
+		       go_D2_min, go_D2_max, go_D2_mn, go_D2_max - go_D2_mn);
 		printf("    pitch diameter wear limit: %g\n", g.go.D2_wearlim);
-		printf("    minor diameter (D1): %g...%g\n", min(g.go.D1), max(g.go.D1));
+		printf("    minor diameter (D1): %g...%g\t(%g+-%g)\n",
+		       go_D1_min, go_D1_max, go_D1_mn, go_D1_max - go_D1_mn);
 		printf("    minor diameter wear limit: %g\n", g.go.D1_wearlim);
+
+		ng_D_min = min(g.ng.D);
+		ng_D_max = max(g.ng.D);
+		ng_D_mn = mean([ng_D_min ng_D_max]);
+		ng_D2_min = min(g.ng.D2);
+		ng_D2_max = max(g.ng.D2);
+		ng_D2_mn = mean([ng_D2_min ng_D2_max]);
+		ng_D1_min = min(g.ng.D1);
+		ng_D1_max = max(g.ng.D1);
+		ng_D1_mn = mean([ng_D1_min ng_D1_max]);
+
 		printf("Ring-NoGo for thread %gx%g\n", d, p);
-		printf("    major diameter (D):  %g...%g\n", min(g.ng.D), max(g.ng.D));
-		printf("    pitch diameter (D2): %g...%g\n", min(g.ng.D2), max(g.ng.D2));
+		printf("    major diameter (D):  %g...%g\t(%g+-%g)\n",
+		       ng_D_min, ng_D_max, ng_D_mn, ng_D_max - ng_D_mn);
+		printf("    pitch diameter (D2): %g...%g\t(%g+-%g)\n",
+		       ng_D2_min, ng_D2_max, ng_D2_mn, ng_D2_max - ng_D2_mn);
 		printf("    pitch diameter wear limit: %g\n", g.ng.D2_wearlim);
-		printf("    minor diameter (D1): %g...%g\n", min(g.ng.D1), max(g.ng.D1));
+		printf("    minor diameter (D1): %g...%g\t(%g+-%g)\n",
+		       ng_D1_min, ng_D1_max, ng_D1_mn, ng_D1_max - ng_D1_mn);
 	case "cplug"
+
+		go_d_min = min(g.go.d);
+		go_d_max = max(g.go.d);
+		go_d_mn = mean([go_d_min go_d_max]);
+		go_d2_min = min(g.go.d2);
+		go_d2_max = max(g.go.d2);
+		go_d2_mn = mean([go_d2_min go_d2_max]);
+		go_d1_min = min(g.go.d1);
+		go_d1_max = max(g.go.d1);
+		go_d1_mn = mean([go_d1_min go_d1_max]);
+
 		printf("CPlug-Go for thread %gx%g:\n", d, p);
-		printf("    major diameter (d):  %g...%g\n", min(g.go.d), max(g.go.d));
-		printf("    pitch diameter (d2): %g...%g\n", min(g.go.d2), max(g.go.d2));
-		printf("    minor diameter (d1): %g...%g\n", min(g.go.d1), max(g.go.d1));
+		printf("    major diameter (d):  %g...%g\t(%g+-%g)\n",
+			   go_d_min, go_d_max, go_d_mn, go_d_max - go_d_mn);
+		printf("    pitch diameter (d2): %g...%g\t(%g+-%g)\n",
+			   go_d2_min, go_d2_max, go_d2_mn, go_d2_max - go_d2_mn);
+		printf("    minor diameter (d1): %g...%g\t(%g+-%g)\n",
+			   go_d1_min, go_d1_max, go_d1_mn, go_d1_max - go_d1_mn);
+
+		ng_d_min = min(g.ng.d);
+		ng_d_max = max(g.ng.d);
+		ng_d_mn = mean([ng_d_min ng_d_max]);
+		ng_d2_min = min(g.ng.d2);
+		ng_d2_max = max(g.ng.d2);
+		ng_d2_mn = mean([ng_d2_min ng_d2_max]);
+		ng_d1_min = min(g.ng.d1);
+		ng_d1_max = max(g.ng.d1);
+		ng_d1_mn = mean([ng_d1_min ng_d1_max]);
+
 		printf("CPlug-NoGo for thread %gx%g\n", d, p);
-		printf("    major diameter (d):  %g...%g\n", min(g.ng.d), max(g.ng.d));
-		printf("    pitch diameter (d2): %g...%g\n", min(g.ng.d2), max(g.ng.d2));
-		printf("    minor diameter (d1): %g...%g\n", min(g.ng.d1), max(g.ng.d1));
+		printf("    major diameter (d):  %g...%g\t(%g+-%g)\n",
+			   ng_d_min, ng_d_max, ng_d_mn, ng_d_max - ng_d_mn);
+		printf("    pitch diameter (d2): %g...%g\t(%g+-%g)\n",
+			   ng_d2_min, ng_d2_max, ng_d2_mn, ng_d2_max - ng_d2_mn);
+		printf("    minor diameter (d1): %g...%g\t(%g+-%g)\n",
+			   ng_d1_min, ng_d1_max, ng_d1_mn, ng_d1_max - ng_d1_mn);
 	end
 end
 

@@ -1,0 +1,18 @@
+#! /usr/bin/octave -qf
+
+# Расчёт калибров-пробок для  5"-3 ACME-2 STARTS-3G-LEFT
+
+thr.P = 25.4/3;
+thr.Ph = thr.P * 2;
+thr.d = thr.D4 = 5 * 25.4;
+thr.TD2 = 0.014344 * 25.4;
+thr.ang = 29;
+
+plug = trgage(thr, "plug");
+print_gage(plug, thr.P, thr.D4, "plug");
+
+ball = bchooser(thr.P, thr.ang);
+GM_PlugGo = gmaker("plug", plug.go, ball);
+GM_PlugNG = gmaker("plug", plug.ng, ball);
+printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
+printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
