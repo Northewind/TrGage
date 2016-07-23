@@ -1,21 +1,21 @@
 function [b prefd] = bchooser(P, ang)
-	## Выбор шарика Gagemaker для контроля резьбы. Также выводится предпочтительный диаметр шарика.
-	##   
-	## [ball prefD] = bchooser(P, ang)
-	##
-	##   P      Шаг резьбы
-	##   ang    Угол профиля резьбы
-	##
+	%% Выбор шарика Gagemaker для контроля резьбы. Также выводится предпочтительный диаметр шарика.
+	%% 
+	%% Usage:
+	%%     [ball prefD] = bchooser(P, ang)
+	%%
+	%% Inputs:
+	%%   P      Шаг резьбы
+	%%   ang    Угол профиля резьбы
 	prefd = P / (2 * cosd(ang / 2));
 	balls = allballs();
 	b = balls(1);
 	for i = 2 : length(balls)
 		if (abs(balls(i).d - prefd)  <  abs(b.d - prefd))
 			b = balls(i);
-		endif
-	endfor
-endfunction
-
+		end
+	end
+end
 
 
 function b = allballs()
@@ -28,5 +28,5 @@ function b = allballs()
 	b(i).dsec = 2.525;
 	b(++i).d  = 2.666;
 	b(i).dsec = 2.085;
-endfunction
+end
 
