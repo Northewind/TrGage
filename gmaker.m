@@ -41,7 +41,7 @@ end
 
 function z = ax_offset(g)
 	%% Смещение вдоль оси противоположных заходов
-	starts = g.Ph / g.P
+	starts = g.Ph / g.P;
 	% Углы заходов:
 	ang = linspace(0, 360, starts + 1)(1:end-1);
 	% Наиболее удалённый заход:

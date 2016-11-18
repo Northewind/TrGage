@@ -1,0 +1,52 @@
+#! /usr/bin/octave -qf
+source trgage.m
+
+
+###### Контролируемая резьба: Tr150x7.257 special ######
+
+# Шаг и ход контролируемой
+thr.P = 7.257;
+thr.Ph = 7.257;
+# Номинальный наружный диаметр
+thr.d = thr.D4 = 150;
+# Допуски среднего диаметра
+thr.TD2 = 0.3;      # Внутренняя резьба
+# Основные отклоненения
+thr.EID2 = 0;
+# Угол профиля резьбы (номинал), град
+thr.ang = 29;
+
+# Номинальный средний диаметр контролируемой резьбы
+thr.d2 = thr.D2 = 145.83;
+# Номинальный внутренний диаметр
+thr.D1 = 142.2;
+thr.d3 = 142.2;
+
+
+###### Расчёт ######
+
+# Расстояние между линией среднего диаметра и вершиной укороченного профиля резьбы калибра
+F1 = 0.1 * thr.P;
+
+gtol = tol(thr.TD2, thr.P, thr.Ph);
+g.go = plugGO(thr, gtol);
+g.ng = plugNG(thr, gtol, F1);
+
+g.go.ang = g.ng.ang = thr.ang;
+g.go.P = g.ng.P = thr.P;
+g.go.Ph = g.ng.Ph = thr.Ph;
+
+ball = bchooser(thr.P, thr.ang);
+
+GM_PlugGo = gmaker("plug", g.go, ball);
+GM_PlugNG = gmaker("plug", g.ng, ball);
+
+
+###### Вывод результатов ######
+
+print_gage(g, thr.P, thr.d, "plug");
+
+ball
+printf("GM dist PlugGo = %.3f ... %.3f\n", GM_PlugGo);
+printf("GM dist PlugNG = %.3f ... %.3f\n", GM_PlugNG);
+

@@ -4,7 +4,8 @@
 
 thr.P = 25.4/3;
 thr.Ph = thr.P * 2;
-thr.d = thr.D4 = 5 * 25.4;
+thr.d = 5 * 25.4;
+thr.D4 = 5 * 25.4 + 2;
 thr.TD2 = 0.014344 * 25.4;
 thr.ang = 29;
 
